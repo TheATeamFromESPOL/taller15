@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -19,13 +20,14 @@ int main(int argc, char *argv[]){
 			printf("Error cerrando cosas estándar.");
         	return 0;
 		}
-		int hue = setsid();
-		char buf[100];
+		setsid();		
 		while(1){
+			char buf[100] = {0};
 			FILE *fp = popen("top -bn2 | grep '%Cpu' | tail -1", "r");
 			fread(buf,100,1, fp);
-			write(archivo,buf,101);
+			write(archivo,buf,strlen(buf));
 			sleep(1);
+			pclose(fp);
 		}
 	}
 	return 0;
